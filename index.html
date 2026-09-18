@@ -10,7 +10,7 @@
 <link rel="canonical" href="https://nocrew.io/" />
 <meta name="theme-color" content="#0A0A0A" />
 <link rel="icon" type="image/png" href="assets/logo/favicon-64.png" />
-<link rel="apple-touch-icon" href="assets/logo/nocrew-mark.png" />
+<link rel="apple-touch-icon" href="assets/logo/apple-touch-icon.png" />
 
 <!-- Open Graph -->
 <meta property="og:type" content="website" />
@@ -48,7 +48,7 @@
 <!-- ========================================================== FONTS -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
 
 <style>
 /* ===================================================================
@@ -307,6 +307,21 @@ button { font-family: inherit; cursor: pointer; }
   z-index: 1;              /* between video (0) and scrim (2): visible through the scrim */
   overflow: hidden;
   pointer-events: none;
+}
+/* Mobile dot field (canvas). Hidden on desktop; replaces the blurred orbs on
+   phones — cheaper to paint and gives the hero motion. */
+.hero-dots {
+  display: none;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+@media (max-width: 720px) {
+  .hero-orbs { display: none; }   /* drop the expensive blur(80px) on mobile */
+  .hero-dots { display: block; }
 }
 .orb-wrap {
   position: absolute;
@@ -925,12 +940,14 @@ button { font-family: inherit; cursor: pointer; }
     <!-- REPLACE: drop your showreel at assets/hero/showreel.mp4 -->
     <source src="assets/hero/showreel.mp4" type="video/mp4" />
   </video>
-  <!-- Layer A — ambient drifting orbs (parallax depth on wrap, drift on orb) -->
+  <!-- Layer A — ambient drifting orbs (desktop) -->
   <div class="hero-orbs" aria-hidden="true">
     <div class="orb-wrap" data-depth="0.02"><span class="orb orb-1"></span></div>
     <div class="orb-wrap" data-depth="0.045"><span class="orb orb-3"></span></div>
     <div class="orb-wrap" data-depth="0.07"><span class="orb orb-2"></span></div>
   </div>
+  <!-- Layer A (mobile) — animated dot field, looping -->
+  <canvas class="hero-dots" id="heroDots" aria-hidden="true"></canvas>
 
   <div class="hero-scrim"></div>
 
@@ -1569,6 +1586,105 @@ if (hero) {
   heroObs.observe(hero);
   if (reduceMotion && heroVideo) heroVideo.pause();
 }
+
+/* ===================================================================
+   [01] HERO — mobile dot GRID (canvas), looping highlight
+   -------------------------------------------------------------------
+   Runs only on phones (where the blurred orbs are hidden). A uniform
+   grid of dots, dim by default, with a soft highlight that travels a
+   looping path across them — the dots it passes brighten and fade, so
+   a wave of light drifts through the grid forever. Cheap to paint,
+   pauses when the hero scrolls away, off for reduced motion.
+   =================================================================== */
+(function heroDots() {
+  const canvas = $('#heroDots');
+  if (!canvas || !hero) return;
+
+  const mq = window.matchMedia('(max-width: 720px)');
+  const ctx = canvas.getContext('2d');
+  let pts = [], w = 0, h = 0, dpr = 1, dotRaf = null, running = false, t0 = 0;
+
+  // ---- TUNING ----
+  const GAP    = 30;    // px between dots
+  const DOT    = 1.4;   // dot radius
+  const BASE_A = 0.10;  // resting brightness
+  const GLOW_A = 0.65;  // peak brightness under the highlight
+  const RADIUS = 160;   // highlight reach (px)
+
+  function build() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);   // cap DPR for perf
+    const r = hero.getBoundingClientRect();
+    w = r.width; h = r.height;
+    canvas.width = Math.round(w * dpr);
+    canvas.height = Math.round(h * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    // build a centred, evenly-spaced grid
+    pts = [];
+    const cols = Math.ceil(w / GAP), rows = Math.ceil(h / GAP);
+    const offX = (w - (cols - 1) * GAP) / 2, offY = (h - (rows - 1) * GAP) / 2;
+    for (let iy = 0; iy < rows; iy++)
+      for (let ix = 0; ix < cols; ix++)
+        pts.push({ x: offX + ix * GAP, y: offY + iy * GAP });
+  }
+
+  function frame(now) {
+    if (!t0) t0 = now;
+    const t = (now - t0) / 1000;
+    ctx.clearRect(0, 0, w, h);
+
+    // highlight travels a smooth looping (Lissajous) path across the hero
+    const hx = w * (0.5 + 0.42 * Math.sin(t * 0.55));
+    const hy = h * (0.5 + 0.40 * Math.sin(t * 0.37 + 1.1));
+    const r2 = RADIUS * RADIUS;
+
+    for (const p of pts) {
+      const dx = p.x - hx, dy = p.y - hy;
+      const d2 = dx * dx + dy * dy;
+      let a = BASE_A, lime = 0;
+      if (d2 < r2) {
+        const k = 1 - Math.sqrt(d2) / RADIUS;   // 0..1 closeness to highlight
+        a = BASE_A + (GLOW_A - BASE_A) * k * k;
+        lime = k;                               // tint toward lime near the core
+      }
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, DOT, 0, Math.PI * 2);
+      ctx.fillStyle = lime > 0.35
+        ? 'rgba(232,255,90,' + (a * 0.95) + ')'
+        : 'rgba(245,243,239,' + a + ')';
+      ctx.fill();
+    }
+    dotRaf = requestAnimationFrame(frame);
+  }
+
+  function start() {
+    if (running || reduceMotion || !mq.matches) return;
+    running = true; t0 = 0; build(); dotRaf = requestAnimationFrame(frame);
+  }
+  function stop() {
+    running = false;
+    if (dotRaf) { cancelAnimationFrame(dotRaf); dotRaf = null; }
+    if (ctx) ctx.clearRect(0, 0, w, h);
+  }
+
+  // Pause when the hero leaves the viewport (no idle loop)
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { e.isIntersecting ? start() : stop(); });
+  }, { threshold: 0.05 });
+  obs.observe(hero);
+
+  // React to rotation / resize and to crossing the mobile breakpoint
+  let rz;
+  window.addEventListener('resize', () => {
+    clearTimeout(rz);
+    rz = setTimeout(() => {
+      if (!mq.matches) { stop(); return; }
+      if (running) build(); else start();
+    }, 200);
+  }, { passive: true });
+
+  if (mq.matches && !reduceMotion) start();
+})();
 </script>
 </body>
 </html>
