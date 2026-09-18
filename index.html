@@ -1,0 +1,1574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<!-- ============================================================= SEO -->
+<title>Nocrew — AI Production House</title>
+<meta name="description" content="Nocrew is an AI production house. Cinematic films, product visuals and UGC — produced end to end with AI. Studio-grade output, without the crew or the wait." />
+<link rel="canonical" href="https://nocrew.io/" />
+<meta name="theme-color" content="#0A0A0A" />
+<link rel="icon" type="image/png" href="assets/logo/favicon-64.png" />
+<link rel="apple-touch-icon" href="assets/logo/nocrew-mark.png" />
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Nocrew" />
+<meta property="og:title" content="Nocrew — AI Production House" />
+<meta property="og:description" content="Cinematic films, product visuals and UGC — produced end to end with AI. Studio-grade output, without the crew or the wait." />
+<meta property="og:url" content="https://nocrew.io/" />
+<meta property="og:image" content="https://nocrew.io/assets/og/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Nocrew — AI Production House" />
+<meta name="twitter:description" content="Cinematic films, product visuals and UGC — produced end to end with AI." />
+<meta name="twitter:image" content="https://nocrew.io/assets/og/og-image.png" />
+
+<!-- JSON-LD Organization schema -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Nocrew",
+  "url": "https://nocrew.io",
+  "description": "AI production house. Cinematic films, product visuals and UGC produced end to end with AI.",
+  "founder": { "@type": "Person", "name": "Khush" },
+  "foundingLocation": {
+    "@type": "Place",
+    "address": { "@type": "PostalAddress", "addressLocality": "Mumbai", "addressCountry": "IN" }
+  },
+  "sameAs": ["https://instagram.com/nocrew.io"]
+}
+</script>
+
+<!-- ========================================================== FONTS -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+
+<style>
+/* ===================================================================
+   DESIGN SYSTEM
+   =================================================================== */
+:root {
+  --bg:       #0A0A0A;
+  --surface:  #141414;
+  --border:   rgba(255,255,255,0.08);
+  --text:     #F5F3EF;
+  --muted:    #8A8A85;
+  --accent:   #E8FF5A;
+
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --max: 1280px;
+  --gutter: clamp(1.25rem, 5vw, 4rem);
+  --section-y: clamp(6rem, 12vh, 10rem);
+
+  --font-display: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, .display {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  margin: 0;
+}
+
+a { color: inherit; text-decoration: none; }
+img, svg, video { display: block; max-width: 100%; }
+button { font-family: inherit; cursor: pointer; }
+
+.tabular { font-variant-numeric: tabular-nums; }
+
+/* Focus rings */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.wrap {
+  max-width: var(--max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section {
+  padding-block: var(--section-y);
+  border-top: 1px solid var(--border);
+}
+
+.eyebrow {
+  font-size: 0.75rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 1.5rem;
+}
+
+.skip-link {
+  position: absolute; left: -999px; top: 0; z-index: 100;
+  background: var(--accent); color: #0A0A0A; padding: 0.75rem 1.25rem;
+  font-weight: 600; border-radius: 0 0 6px 0;
+}
+.skip-link:focus { left: 0; }
+
+/* -------------------------------------------------- Grain overlay */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.03;
+  mix-blend-mode: overlay;
+}
+
+/* -------------------------------------------------- Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1rem 1.75rem;
+  background: var(--accent);
+  color: #0A0A0A;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: -0.01em;
+  border: none;
+  border-radius: 100px;
+  transition: transform 0.3s var(--ease), background 0.3s var(--ease);
+}
+.btn:hover { transform: translateY(-2px); background: #f0ff7a; }
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.55rem 1.15rem;
+  background: var(--accent);
+  color: #0A0A0A;
+  font-weight: 600;
+  font-size: 0.85rem;
+  border-radius: 100px;
+  transition: transform 0.3s var(--ease), background 0.3s var(--ease);
+}
+.pill:hover { transform: translateY(-1px); background: #f0ff7a; }
+
+/* ===================================================================
+   [00] NAV
+   =================================================================== */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 50;
+  transition: background 0.4s var(--ease), backdrop-filter 0.4s var(--ease), border-color 0.4s var(--ease);
+  border-bottom: 1px solid transparent;
+}
+.nav.scrolled {
+  background: rgba(10,10,10,0.72);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border-bottom: 1px solid var(--border);
+}
+.nav-inner {
+  max-width: var(--max);
+  margin-inline: auto;
+  padding: 1.15rem var(--gutter);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.wordmark {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+}
+/* Logo mark: white-on-black source; screen blend drops the black so only the
+   NC shows, clean over the dark nav, the scrim, or bright hero footage. */
+.brand-mark {
+  height: 30px;
+  width: auto;
+  display: block;
+  mix-blend-mode: screen;
+}
+.footer .brand-mark { height: 40px; }
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+.nav-links a.nav-link {
+  font-size: 0.9rem;
+  color: var(--muted);
+  transition: color 0.3s var(--ease);
+}
+.nav-links a.nav-link:hover { color: var(--text); }
+
+.nav-toggle { display: none; }
+
+/* Mobile menu */
+.mobile-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 49;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: var(--gutter);
+  transform: translateY(-100%);
+  transition: transform 0.6s var(--ease);
+  visibility: hidden;
+}
+.mobile-menu.open { transform: translateY(0); visibility: visible; }
+.mobile-menu a {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2rem, 10vw, 3.5rem);
+  letter-spacing: -0.03em;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+}
+.mobile-menu.open a {
+  opacity: 1;
+  transform: translateY(0);
+}
+.mobile-menu.open a:nth-child(1) { transition-delay: 0.15s; }
+.mobile-menu.open a:nth-child(2) { transition-delay: 0.23s; }
+.mobile-menu.open a:nth-child(3) { transition-delay: 0.31s; }
+.mobile-menu.open a:nth-child(4) { transition-delay: 0.39s; }
+
+/* ===================================================================
+   [01] HERO
+   =================================================================== */
+.hero {
+  position: relative;
+  height: 100svh;
+  min-height: 600px;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+.hero-video, .hero-poster-fallback {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+.hero-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(180deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 40%, rgba(0,0,0,0.85) 100%);
+  pointer-events: none;
+}
+.hero-content {
+  position: relative;
+  z-index: 4;
+  width: 100%;
+  max-width: var(--max);
+  margin-inline: auto;
+  padding: 0 var(--gutter) clamp(4rem, 10vh, 7rem);
+}
+.hero-video { will-change: transform; }
+
+/* ---- Cursor-reactive hero — Layer A (orbs), C (glow) ---- */
+.hero-orbs {
+  position: absolute;
+  inset: 0;
+  z-index: 1;              /* between video (0) and scrim (2): visible through the scrim */
+  overflow: hidden;
+  pointer-events: none;
+}
+.orb-wrap {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+.orb {
+  position: absolute;
+  display: block;
+  border-radius: 50%;
+  filter: blur(80px);
+  will-change: transform;
+}
+/* two lime, one cool desaturated blue — never fully saturated */
+.orb-1 { width: 600px; height: 600px; top: -8%;  left: -6%;
+  background: radial-gradient(circle, rgba(232,255,90,0.18), rgba(232,255,90,0) 70%);
+  animation: drift1 34s ease-in-out infinite; }
+.orb-2 { width: 700px; height: 700px; bottom: -14%; right: -8%;
+  background: radial-gradient(circle, rgba(232,255,90,0.14), rgba(232,255,90,0) 70%);
+  animation: drift2 40s ease-in-out infinite; }
+.orb-3 { width: 500px; height: 500px; top: 28%; left: 42%;
+  background: radial-gradient(circle, rgba(58,90,107,0.20), rgba(58,90,107,0) 70%);
+  animation: drift3 27s ease-in-out infinite; }
+
+@keyframes drift1 {
+  0%,100% { transform: translate3d(0,0,0); }
+  50%     { transform: translate3d(46px,-34px,0); }
+}
+@keyframes drift2 {
+  0%,100% { transform: translate3d(0,0,0); }
+  50%     { transform: translate3d(-52px,26px,0); }
+}
+@keyframes drift3 {
+  0%,100% { transform: translate3d(0,0,0); }
+  33%     { transform: translate3d(30px,34px,0); }
+  66%     { transform: translate3d(-28px,-20px,0); }
+}
+
+.hero-glow {
+  position: absolute;
+  top: 0; left: 0;
+  z-index: 3;             /* over the footage/scrim, under content */
+  width: 320px; height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(232,255,90,0.16), rgba(232,255,90,0) 70%);
+  mix-blend-mode: screen;
+  pointer-events: none;
+  opacity: 0;             /* fades in on first pointer move */
+  transition: opacity 0.5s var(--ease);
+  will-change: transform;
+}
+.px { will-change: transform; }
+.hero h1 {
+  font-size: clamp(2.75rem, 9vw, 8rem);
+  line-height: 0.95;
+  max-width: 14ch;
+  margin-bottom: 1.75rem;
+}
+.line-mask { display: block; overflow: hidden; }
+.line-mask > span {
+  display: block;
+  transform: translateY(110%);
+}
+.hero-sub {
+  font-size: clamp(1rem, 1.6vw, 1.35rem);
+  color: var(--text);
+  max-width: 46ch;
+  margin: 0 0 2.5rem;
+  line-height: 1.55;
+  opacity: 0;
+  transform: translateY(20px);
+}
+.hero-cta {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+/* Scroll hint */
+.scroll-hint {
+  position: absolute;
+  bottom: 1.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  width: 1px;
+  height: 48px;
+  background: var(--border);
+  overflow: hidden;
+}
+.scroll-hint::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 40%;
+  background: var(--text);
+  animation: scrollLoop 2s var(--ease) infinite;
+}
+@keyframes scrollLoop {
+  0%   { transform: translateY(-100%); }
+  60%  { transform: translateY(250%); }
+  100% { transform: translateY(250%); }
+}
+
+/* ===================================================================
+   [02] STAT BAR
+   =================================================================== */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.stat {
+  background: var(--bg);
+  padding: clamp(2rem, 5vw, 3.5rem) clamp(1.25rem, 3vw, 2rem);
+}
+.stat-num {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+.stat-suffix { color: var(--muted); font-weight: 600; }
+.stat-label {
+  margin-top: 0.9rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+  line-height: 1.4;
+  max-width: 22ch;
+}
+
+/* ===================================================================
+   [03] WORK
+   =================================================================== */
+.work-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+.work-head h2 {
+  font-size: clamp(2rem, 5vw, 3.75rem);
+}
+.work-note {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+/* Uniform 9:16 grid — every tile the same format as the films */
+.work-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(0.75rem, 1.5vw, 1.25rem);
+}
+.tile {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  transition: transform 0.4s var(--ease), border-color 0.3s var(--ease);
+}
+.tile:not(.placeholder):hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.16); }
+.tile .media-box {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 9 / 16;   /* all films are portrait */
+}
+.tile video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #000;
+}
+
+.tile-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;   /* never intercept clicks meant for the player */
+  background: linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0) 42%, rgba(0,0,0,0.72) 100%);
+  transition: opacity 0.35s var(--ease);
+}
+.tile.playing .tile-scrim { opacity: 0; }   /* clear the frame while the video plays */
+
+.tile-meta {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  z-index: 3;
+  pointer-events: none;
+  padding: 1.1rem 1.25rem;
+  transition: opacity 0.35s var(--ease), transform 0.35s var(--ease);
+}
+.tile.playing .tile-meta { opacity: 0; transform: translateY(10px); }
+.tile-brand {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.15rem;
+  letter-spacing: -0.02em;
+}
+.tile-tag {
+  font-size: 0.78rem;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-top: 0.2rem;
+}
+
+/* Center play button — the explicit affordance; click to play WITH sound */
+.play-btn {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 4;
+  width: 62px; height: 62px;
+  border-radius: 50%;
+  background: rgba(10,10,10,0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.18);
+  display: grid; place-items: center;
+  transition: transform 0.3s var(--ease), background 0.3s var(--ease), opacity 0.3s var(--ease);
+}
+.play-btn svg { width: 22px; height: 22px; fill: var(--text); margin-left: 3px; }
+.tile:hover .play-btn { transform: translate(-50%, -50%) scale(1.08); background: var(--accent); }
+.tile:hover .play-btn svg { fill: #0A0A0A; }
+.tile.playing .play-btn { opacity: 0; pointer-events: none; }
+
+/* Placeholder tiles (film not delivered yet) */
+.tile.placeholder .media-box { opacity: 0.5; }
+.tile.placeholder .tile-meta { opacity: 1 !important; transform: none !important; }
+
+/* ===================================================================
+   [04] PROCESS
+   =================================================================== */
+.process-head { margin-bottom: 3.5rem; }
+.process-head h2 { font-size: clamp(2rem, 5vw, 3.75rem); }
+
+.steps {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+}
+/* connecting line */
+.steps::before {
+  content: "";
+  position: absolute;
+  top: 22px;
+  left: 0;
+  height: 1px;
+  width: 100%;
+  background: var(--border);
+}
+.steps-progress {
+  position: absolute;
+  top: 22px;
+  left: 0;
+  height: 1px;
+  width: 0%;
+  background: var(--accent);
+  transition: width 0.1s linear;
+  z-index: 1;
+}
+.step { position: relative; }
+.step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--muted);
+  position: relative;
+  z-index: 2;
+  margin-bottom: 1.5rem;
+}
+.step h3 {
+  font-size: 1.3rem;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.02em;
+}
+.step p { color: var(--muted); font-size: 0.95rem; margin: 0; }
+
+.toolbar {
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.9rem;
+  letter-spacing: 0.02em;
+}
+.toolbar strong { color: var(--text); font-weight: 500; }
+
+/* ===================================================================
+   [05] COST COMPARISON
+   =================================================================== */
+.cost-head { margin-bottom: 3.5rem; }
+.cost-head h2 { font-size: clamp(2rem, 5vw, 3.75rem); }
+
+.cost-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(1rem, 2.5vw, 1.75rem);
+}
+.cost-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: clamp(1.75rem, 4vw, 2.75rem);
+  display: flex;
+  flex-direction: column;
+}
+.cost-card.accent { border-color: rgba(232,255,90,0.35); }
+.cost-label {
+  font-size: 0.8rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 1.5rem;
+}
+.cost-total {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  letter-spacing: -0.04em;
+  line-height: 1;
+  margin-bottom: 2rem;
+}
+.cost-card.accent .cost-total { color: var(--accent); }
+.cost-items { list-style: none; padding: 0; margin: 0 0 auto; }
+.cost-items li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 0;
+  border-top: 1px solid var(--border);
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+.cost-items li span:last-child { color: var(--text); }
+.cost-card.accent p {
+  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  margin: 0.5rem 0 0;
+}
+.cost-card.accent p strong { color: var(--text); font-weight: 500; }
+
+/* ===================================================================
+   [06] FAQ
+   =================================================================== */
+.faq-head { margin-bottom: 3rem; }
+.faq-head h2 { font-size: clamp(2rem, 5vw, 3.75rem); }
+.faq-list { border-top: 1px solid var(--border); }
+.faq-item { border-bottom: 1px solid var(--border); }
+.faq-q {
+  width: 100%;
+  background: none;
+  border: none;
+  color: var(--text);
+  text-align: left;
+  padding: 1.6rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.1rem, 2.2vw, 1.5rem);
+  letter-spacing: -0.02em;
+}
+.faq-icon {
+  position: relative;
+  flex-shrink: 0;
+  width: 20px; height: 20px;
+}
+.faq-icon::before, .faq-icon::after {
+  content: "";
+  position: absolute;
+  background: var(--muted);
+  transition: transform 0.3s var(--ease), background 0.3s var(--ease);
+}
+.faq-icon::before { top: 9px; left: 0; width: 20px; height: 2px; }
+.faq-icon::after { top: 0; left: 9px; width: 2px; height: 20px; }
+.faq-item.open .faq-icon::after { transform: scaleY(0); }
+.faq-item.open .faq-icon::before { background: var(--accent); }
+.faq-a {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s var(--ease);
+}
+.faq-a-inner {
+  padding: 0 0 1.6rem;
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.65;
+  max-width: 60ch;
+}
+
+/* ===================================================================
+   [07] CTA BAND
+   =================================================================== */
+.cta-band { text-align: center; }
+.cta-band h2 {
+  font-size: clamp(2.25rem, 6vw, 5rem);
+  max-width: 16ch;
+  margin-inline: auto;
+}
+.cta-band .sub {
+  color: var(--muted);
+  font-size: clamp(1rem, 1.6vw, 1.25rem);
+  max-width: 40ch;
+  margin: 1.5rem auto 3rem;
+}
+.waitlist {
+  display: flex;
+  gap: 0.75rem;
+  max-width: 520px;
+  margin-inline: auto;
+}
+.waitlist input {
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 1rem 1.5rem;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 1rem;
+  transition: border-color 0.3s var(--ease);
+}
+.waitlist input::placeholder { color: var(--muted); }
+.waitlist input:focus { outline: none; border-color: var(--accent); }
+.waitlist input.error { border-color: #ff6b6b; }
+.waitlist button { white-space: nowrap; }
+.form-msg {
+  margin-top: 1.25rem;
+  font-size: 0.9rem;
+  min-height: 1.2em;
+}
+.form-msg.err { color: #ff8080; }
+.confirm {
+  color: var(--accent);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  letter-spacing: -0.02em;
+}
+.cta-booking {
+  margin-top: 1.75rem;
+  color: var(--text);
+  font-size: 0.9rem;
+  letter-spacing: 0.01em;
+}
+.cta-booking span { color: var(--accent); font-weight: 500; }
+.cta-fine {
+  margin-top: 0.6rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+/* ===================================================================
+   [08] FOOTER
+   =================================================================== */
+.footer {
+  border-top: 1px solid var(--border);
+  padding-block: clamp(3rem, 6vh, 5rem);
+}
+.footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+}
+.footer .wordmark { font-size: 1.4rem; }
+.footer-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.5rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.footer-meta a { transition: color 0.3s var(--ease); }
+.footer-meta a:hover { color: var(--text); }
+
+/* ===================================================================
+   SCROLL REVEAL
+   =================================================================== */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ===================================================================
+   RESPONSIVE
+   =================================================================== */
+@media (max-width: 900px) {
+  .work-grid { grid-template-columns: 1fr 1fr; }
+  .steps { grid-template-columns: 1fr 1fr; }
+  .steps::before, .steps-progress { display: none; }
+}
+
+@media (max-width: 720px) {
+  .nav-links { display: none; }
+  .nav-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px; height: 44px;
+    background: none; border: none; z-index: 51; position: relative;
+  }
+  .nav-toggle span {
+    position: relative;
+    width: 24px; height: 2px; background: var(--text);
+    transition: background 0.3s var(--ease);
+  }
+  .nav-toggle span::before, .nav-toggle span::after {
+    content: ""; position: absolute; left: 0;
+    width: 24px; height: 2px; background: var(--text);
+    transition: transform 0.3s var(--ease);
+  }
+  .nav-toggle span::before { top: -7px; }
+  .nav-toggle span::after { top: 7px; }
+  .nav-toggle.active span { background: transparent; }
+  .nav-toggle.active span::before { transform: translateY(7px) rotate(45deg); }
+  .nav-toggle.active span::after { transform: translateY(-7px) rotate(-45deg); }
+
+  .stats { grid-template-columns: 1fr 1fr; }
+  .work-grid { grid-template-columns: 1fr; }
+  .steps { grid-template-columns: 1fr; }
+  .cost-grid { grid-template-columns: 1fr; }
+  .waitlist { flex-direction: column; }
+  .waitlist button { width: 100%; justify-content: center; }
+}
+
+/* ===================================================================
+   REDUCED MOTION
+   =================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .line-mask > span { transform: none !important; }
+  .hero-sub, .hero-cta, .reveal { opacity: 1 !important; transform: none !important; }
+  .scroll-hint { display: none; }
+  /* Cursor-reactive hero: orbs render static, no glow, no parallax */
+  .orb { animation: none !important; }
+  .orb-wrap, .px, .hero-video { transform: none !important; }
+  .hero-glow { display: none !important; }
+}
+
+/* content-visibility for below-fold perf */
+.cv { content-visibility: auto; contain-intrinsic-size: auto 800px; }
+</style>
+</head>
+
+<body>
+<a class="skip-link" href="#work">Skip to work</a>
+
+<!-- Grain overlay -->
+<svg class="grain" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <filter id="grainFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/></filter>
+  <rect width="100%" height="100%" filter="url(#grainFilter)"/>
+</svg>
+
+<!-- ============================================================= [00] NAV -->
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#top" class="wordmark" aria-label="Nocrew home"><img class="brand-mark" src="assets/logo/nocrew-mark.png" alt="Nocrew" width="30" height="30" /></a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#work" class="nav-link">Work</a>
+      <a href="#process" class="nav-link">Process</a>
+      <a href="#contact" class="nav-link">Contact</a>
+      <a href="#contact" class="pill">Join Waitlist</a>
+    </nav>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+      <span></span>
+    </button>
+  </div>
+</header>
+
+<nav class="mobile-menu" id="mobileMenu" aria-label="Mobile">
+  <a href="#work">Work</a>
+  <a href="#process">Process</a>
+  <a href="#contact">Contact</a>
+  <a href="#contact">Join Waitlist</a>
+</nav>
+
+<main id="top">
+
+<!-- ============================================================= [01] HERO -->
+<section class="hero" aria-label="Intro">
+  <video class="hero-video" id="heroVideo"
+    autoplay muted loop playsinline preload="metadata"
+    poster="assets/hero/hero-poster.svg">
+    <!-- REPLACE: drop your showreel at assets/hero/showreel.mp4 -->
+    <source src="assets/hero/showreel.mp4" type="video/mp4" />
+  </video>
+  <!-- Layer A — ambient drifting orbs (parallax depth on wrap, drift on orb) -->
+  <div class="hero-orbs" aria-hidden="true">
+    <div class="orb-wrap" data-depth="0.02"><span class="orb orb-1"></span></div>
+    <div class="orb-wrap" data-depth="0.045"><span class="orb orb-3"></span></div>
+    <div class="orb-wrap" data-depth="0.07"><span class="orb orb-2"></span></div>
+  </div>
+
+  <div class="hero-scrim"></div>
+
+  <!-- Layer C — cursor glow -->
+  <div class="hero-glow" id="heroGlow" aria-hidden="true"></div>
+
+  <div class="hero-content">
+    <!-- Layer B — content parallax wrappers (shift inversely to cursor) -->
+    <div class="px" data-depth="0.012" data-invert="1">
+      <h1>
+        <span class="line-mask"><span>Your AI</span></span>
+        <span class="line-mask"><span>Production</span></span>
+        <span class="line-mask"><span>House</span></span>
+      </h1>
+    </div>
+    <div class="px" data-depth="0.02" data-invert="1">
+      <p class="hero-sub">Cinematic films, product visuals and UGC — produced end to end with AI. Studio-grade output, without the crew or the wait.</p>
+    </div>
+    <div class="hero-cta">
+      <a href="#contact" class="btn">Join the Waitlist</a>
+    </div>
+  </div>
+
+  <div class="scroll-hint" aria-hidden="true"></div>
+</section>
+
+<!-- ============================================================= [02] STAT BAR -->
+<section class="section cv" aria-label="By the numbers">
+  <div class="wrap">
+    <div class="stats" id="stats">
+      <!-- numbers injected/animated from CONFIG.stats -->
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================= [03] WORK -->
+<section class="section cv" id="work">
+  <div class="wrap">
+    <div class="work-head reveal">
+      <div>
+        <p class="eyebrow">The Reel</p>
+        <h2>Selected Work</h2>
+      </div>
+      <p class="work-note">Spec films — self-initiated concept work.</p>
+    </div>
+    <div class="work-grid" id="workGrid">
+      <!-- tiles injected from CONFIG.work -->
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================= [04] PROCESS -->
+<section class="section cv" id="process">
+  <div class="wrap">
+    <div class="process-head reveal">
+      <p class="eyebrow">Process</p>
+      <h2>How the work gets made</h2>
+    </div>
+
+    <div class="steps" id="steps">
+      <div class="steps-progress" id="stepsProgress" aria-hidden="true"></div>
+      <div class="step reveal">
+        <div class="step-num">01</div>
+        <h3>Brief &amp; Script</h3>
+        <p>We turn the product and the goal into a shot-by-shot narrative.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">02</div>
+        <h3>Frame Generation</h3>
+        <p>Every shot built as a photoreal still, art-directed before a second of motion.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">03</div>
+        <h3>Motion &amp; Sound</h3>
+        <p>Frames animated, graded, scored and cut.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">04</div>
+        <h3>Delivery</h3>
+        <p>Master plus platform cuts, 9:16, 1:1 and 16:9, in 72 hours.</p>
+      </div>
+    </div>
+
+    <p class="toolbar reveal">Built with — <strong>Veo</strong> · <strong>Kling</strong> · <strong>ElevenLabs</strong> · <strong>Flux</strong> · <strong>Runway</strong></p>
+  </div>
+</section>
+
+<!-- ============================================================= [05] COST COMPARISON -->
+<section class="section cv" aria-label="Cost comparison">
+  <div class="wrap">
+    <div class="cost-head reveal">
+      <p class="eyebrow">The Maths</p>
+      <h2>One film. Two budgets.</h2>
+    </div>
+
+    <div class="cost-grid">
+      <div class="cost-card reveal">
+        <div class="cost-label">The Traditional Way</div>
+        <div class="cost-total tabular" id="tradTotal">₹0</div>
+        <ul class="cost-items">
+          <li><span>Crew &amp; direction</span><span class="tabular">₹1,10,000</span></li>
+          <li><span>Talent &amp; location</span><span class="tabular">₹70,000</span></li>
+          <li><span>Equipment &amp; rental</span><span class="tabular">₹55,000</span></li>
+          <li><span>Post &amp; grade</span><span class="tabular">₹65,000</span></li>
+        </ul>
+      </div>
+
+      <div class="cost-card accent reveal">
+        <div class="cost-label">The Nocrew Way</div>
+        <div class="cost-total">~15%</div>
+        <p><strong>Roughly 15% of that.</strong> Three to four films, end to end — for what one traditional shoot costs.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================= [06] FAQ -->
+<section class="section cv" aria-label="Frequently asked questions">
+  <div class="wrap">
+    <div class="faq-head reveal">
+      <p class="eyebrow">FAQ</p>
+      <h2>Questions</h2>
+    </div>
+    <div class="faq-list" id="faq">
+      <!-- items injected from CONFIG.faq -->
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================= [07] CTA BAND -->
+<section class="section cv" id="contact">
+  <div class="wrap cta-band">
+    <h2 class="reveal">We're taking on a small number of brands.</h2>
+    <p class="sub reveal">Join the list. We'll reach out when a slot opens.</p>
+
+    <form class="waitlist reveal" id="waitlist" novalidate>
+      <label for="email" class="skip-link">Email address</label>
+      <input type="email" id="email" name="email" placeholder="you@brand.com" autocomplete="email" required />
+      <button type="submit" class="btn">Join the list</button>
+    </form>
+    <p class="form-msg" id="formMsg" role="status" aria-live="polite"></p>
+    <p class="cta-booking reveal">Currently booking from <span id="bookingFrom"></span>.</p>
+    <p class="cta-fine reveal">No spam. One email when a slot opens.</p>
+  </div>
+</section>
+
+</main>
+
+<!-- ============================================================= [08] FOOTER -->
+<footer class="footer">
+  <div class="wrap footer-inner">
+    <a href="#top" class="wordmark" aria-label="Nocrew home"><img class="brand-mark" src="assets/logo/nocrew-mark.png" alt="Nocrew" width="40" height="40" /></a>
+    <div class="footer-meta">
+      <a href="https://instagram.com/nocrew.io" target="_blank" rel="noopener">@nocrew.io</a>
+      <span>Mumbai · India</span>
+      <span id="year">© 2026</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ===================================================================
+   CONFIG  — everything editable lives here
+   =================================================================== */
+const CONFIG = {
+
+  // ---- // EDIT YOUR REAL NUMBERS HERE ----
+  stats: [
+    { value: 90, suffix: "%",  label: "Lower cost than traditional production" },
+    { value: 72, suffix: "hr", label: "Average turnaround, brief to final cut" },
+    { value: 0,  suffix: "",   label: "Crew, cameras or call sheets required" },
+    { value: 6,  suffix: "",   label: "Films produced" }
+  ],
+
+  // ---- Work tiles. All 9:16. Real films first; placeholders (hasVideo:false)
+  //      show a poster and no player until you drop the .mp4 in. Poster is the
+  //      real first frame for delivered films, an .svg placeholder otherwise. ----
+  work: [
+    { brand: "Superyou",      format: "Product Film", hasVideo: true,
+      poster: "assets/work/superyou.jpg",      src: "assets/work/superyou.mp4" },
+    { brand: "Nothing Ear",   format: "Product Film", hasVideo: true,
+      poster: "assets/work/nothing-ear.jpg",   src: "assets/work/nothing-ear.mp4" },
+    { brand: "Nothing Phone", format: "Product Film", hasVideo: true,
+      poster: "assets/work/nothing-phone.jpg", src: "assets/work/nothing-phone.mp4" },
+    { brand: "Red Bull",      format: "Spec Ad",      hasVideo: true,
+      poster: "assets/work/redbull.jpg",       src: "assets/work/redbull.mp4" }
+  ],
+
+  faq: [
+    { q: "Do I own the footage?",
+      a: "Yes. You receive full commercial rights to every final deliverable — no watermarks, no licensing tiers, no per-use fees. It's yours to run anywhere." },
+    { q: "How fast is this?",
+      a: "Most projects go from approved brief to final cut in 72 hours. Larger campaigns with multiple films run a few days longer. We tell you the timeline before we start, not after." },
+    { q: "What do you need from me?",
+      a: "A product, a goal, and any brand assets you already have — logo, palette, fonts, reference. If you have a look in mind, send it. If you don't, that's what step one is for." },
+    { q: "Can you match an existing brand look?",
+      a: "Yes. We art-direct every frame before animating it, so we can lock to your existing guidelines, a competitor's polish, or a reference reel you like — and hold it consistent across every cut." },
+    { q: "How does the waitlist work?",
+      a: "Leave your email and we'll reach out when a production slot opens. No queue number, no spam — one email, when there's actually room." }
+  ],
+
+  // ---- Month shown under the waitlist form ("Currently booking from …") ----
+  bookingFrom: "February",   // EDIT: month we open slots
+
+  // ---- Waitlist endpoint (Formspree) ----
+  // Leave as "" to disable (shows an error, never fakes a send).
+  waitlistEndpoint: "https://formspree.io/f/xvkggvzn"
+};
+
+/* ===================================================================
+   Utilities
+   =================================================================== */
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+
+/* ===================================================================
+   [00] NAV — scroll bg + mobile menu
+   =================================================================== */
+const nav = $('#nav');
+const onScrollNav = () => nav.classList.toggle('scrolled', window.scrollY > 80);
+onScrollNav();
+window.addEventListener('scroll', onScrollNav, { passive: true });
+
+const navToggle = $('#navToggle');
+const mobileMenu = $('#mobileMenu');
+const setMenu = (open) => {
+  navToggle.classList.toggle('active', open);
+  mobileMenu.classList.toggle('open', open);
+  navToggle.setAttribute('aria-expanded', open);
+  navToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  document.body.style.overflow = open ? 'hidden' : '';
+};
+navToggle.addEventListener('click', () => setMenu(!mobileMenu.classList.contains('open')));
+$$('#mobileMenu a').forEach(a => a.addEventListener('click', () => setMenu(false)));
+
+/* ===================================================================
+   [01] HERO — line mask reveal
+   =================================================================== */
+window.addEventListener('load', () => {
+  if (reduceMotion) {
+    $$('.line-mask > span').forEach(s => s.style.transform = 'translateY(0)');
+    $('.hero-sub').style.opacity = 1;
+    $('.hero-cta').style.opacity = 1;
+    return;
+  }
+  const lines = $$('.line-mask > span');
+  lines.forEach((span, i) => {
+    span.style.transition = 'transform 0.9s var(--ease)';
+    setTimeout(() => { span.style.transform = 'translateY(0)'; }, 120 + i * 80);
+  });
+  setTimeout(() => {
+    const sub = $('.hero-sub'), cta = $('.hero-cta');
+    [sub, cta].forEach((el, i) => {
+      el.style.transition = 'opacity 0.8s var(--ease) ' + (i * 0.1) + 's, transform 0.8s var(--ease) ' + (i * 0.1) + 's';
+      el.style.opacity = 1;
+      el.style.transform = 'translateY(0)';
+    });
+  }, 120 + lines.length * 80 + 250);
+});
+
+/* ===================================================================
+   [02] STAT BAR — build + count up
+   =================================================================== */
+const statsEl = $('#stats');
+CONFIG.stats.forEach(s => {
+  const cell = document.createElement('div');
+  cell.className = 'stat';
+  cell.innerHTML =
+    '<div class="stat-num tabular"><span data-target="' + s.value + '">0</span>' +
+    '<span class="stat-suffix">' + s.suffix + '</span></div>' +
+    '<div class="stat-label">' + s.label + '</div>';
+  statsEl.appendChild(cell);
+});
+
+const easeOutExpo = t => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t));
+function countUp(el) {
+  const target = +el.dataset.target;
+  if (reduceMotion || target === 0) { el.textContent = target; return; }
+  const dur = 1600, start = performance.now();
+  const tick = now => {
+    const p = Math.min((now - start) / dur, 1);
+    el.textContent = Math.round(easeOutExpo(p) * target);
+    if (p < 1) requestAnimationFrame(tick);
+    else el.textContent = target;
+  };
+  requestAnimationFrame(tick);
+}
+const statsObserver = new IntersectionObserver((entries, obs) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      $$('.stat-num span[data-target]', statsEl).forEach(countUp);
+      obs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.4 });
+statsObserver.observe(statsEl);
+
+/* ===================================================================
+   [03] WORK — build tiles, click-to-play with sound (one at a time)
+   =================================================================== */
+const workGrid = $('#workGrid');
+
+// Lazy-load a tile video's source the first time it's actually needed
+function ensureSrc(video) {
+  const source = video.querySelector('source');
+  if (source && !source.src && source.dataset.src) {
+    source.src = source.dataset.src;
+    video.load();
+  }
+}
+
+// Reset every OTHER tile to its idle poster state so only one film plays at a time
+function stopOtherVideos(except) {
+  $$('.tile.playing').forEach(t => {
+    const v = t.querySelector('video');
+    if (v && v !== except) {
+      v.pause();
+      v.controls = false;
+      try { v.currentTime = 0; } catch (err) {}
+      t.classList.remove('playing');
+    }
+  });
+}
+
+CONFIG.work.forEach((w, i) => {
+  const tile = document.createElement('div');
+  tile.className = 'tile reveal' + (w.hasVideo ? '' : ' placeholder');
+  tile.style.transitionDelay = (i % 3) * 0.06 + 's';
+
+  tile.innerHTML =
+    '<div class="media-box">' +
+      '<video playsinline preload="none" poster="' + w.poster + '"' + (w.hasVideo ? '' : ' aria-hidden="true"') + '>' +
+        (w.hasVideo ? '<source data-src="' + w.src + '" />' : '') +
+      '</video>' +
+      '<div class="tile-scrim"></div>' +
+      (w.hasVideo ?
+        '<button class="play-btn" type="button" aria-label="Play ' + w.brand + ' — ' + w.format + ', with sound">' +
+          '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button>' : '') +
+      '<div class="tile-meta">' +
+        '<div class="tile-brand">' + w.brand + '</div>' +
+        '<div class="tile-tag">' + w.format + (w.hasVideo ? '' : ' · Coming soon') + '</div>' +
+      '</div>' +
+    '</div>';
+  workGrid.appendChild(tile);
+
+  if (!w.hasVideo) return;
+
+  const video = tile.querySelector('video');
+  const playBtn = tile.querySelector('.play-btn');
+
+  // Start playback WITH sound (user gesture => unmute is allowed)
+  function play() {
+    stopOtherVideos(video);
+    ensureSrc(video);
+    video.muted = false;
+    video.controls = true;          // native play/pause, scrub, volume, fullscreen
+    tile.classList.add('playing');
+    video.play().catch(() => {});
+  }
+
+  playBtn.addEventListener('click', play);
+  // Clicking the poster (before it starts) also plays; once playing, clicks fall
+  // through to the native video controls.
+  tile.addEventListener('click', (e) => {
+    if (!tile.classList.contains('playing') && !e.target.closest('.play-btn')) play();
+  });
+
+  video.addEventListener('play', () => stopOtherVideos(video));
+  video.addEventListener('ended', () => {
+    video.controls = false;
+    tile.classList.remove('playing');
+    try { video.currentTime = 0; } catch (err) {}
+  });
+});
+
+// Pause videos that scroll out of view (battery/CPU). Keeps position + controls.
+const tileVisObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) {
+      const v = e.target.querySelector('video');
+      if (v && !v.paused) v.pause();
+    }
+  });
+}, { threshold: 0.05 });
+$$('.tile').forEach(t => tileVisObserver.observe(t));
+
+/* ===================================================================
+   [04] PROCESS — connecting line draws on scroll
+   =================================================================== */
+const steps = $('#steps');
+const stepsProgress = $('#stepsProgress');
+if (stepsProgress && !reduceMotion) {
+  const onScrollSteps = () => {
+    const r = steps.getBoundingClientRect();
+    const vh = window.innerHeight;
+    // progress from when section enters bottom to when it reaches ~40% up
+    const p = Math.min(Math.max((vh - r.top) / (vh * 0.9), 0), 1);
+    stepsProgress.style.width = (p * 100) + '%';
+  };
+  onScrollSteps();
+  window.addEventListener('scroll', onScrollSteps, { passive: true });
+} else if (stepsProgress) {
+  stepsProgress.style.width = '100%';
+}
+
+/* ===================================================================
+   [05] COST — count up traditional total to ₹3.0L
+   =================================================================== */
+const tradTotal = $('#tradTotal');
+const TRAD_TARGET = 300000; // ₹3.0L itemised
+function fmtINR(n) { return '₹' + Math.round(n).toLocaleString('en-IN'); }
+const costObserver = new IntersectionObserver((entries, obs) => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    obs.unobserve(e.target);
+    if (reduceMotion) { tradTotal.textContent = fmtINR(TRAD_TARGET); return; }
+    const dur = 1600, start = performance.now();
+    const tick = now => {
+      const p = Math.min((now - start) / dur, 1);
+      tradTotal.textContent = fmtINR(easeOutExpo(p) * TRAD_TARGET);
+      if (p < 1) requestAnimationFrame(tick);
+      else tradTotal.textContent = fmtINR(TRAD_TARGET);
+    };
+    requestAnimationFrame(tick);
+  });
+}, { threshold: 0.4 });
+costObserver.observe(tradTotal);
+
+/* ===================================================================
+   [06] FAQ — accordion, one open at a time
+   =================================================================== */
+const faqEl = $('#faq');
+CONFIG.faq.forEach((item, i) => {
+  const wrap = document.createElement('div');
+  wrap.className = 'faq-item';
+  const btnId = 'faq-q-' + i, panelId = 'faq-a-' + i;
+  wrap.innerHTML =
+    '<button class="faq-q" id="' + btnId + '" aria-expanded="false" aria-controls="' + panelId + '">' +
+      '<span>' + item.q + '</span><span class="faq-icon" aria-hidden="true"></span>' +
+    '</button>' +
+    '<div class="faq-a" id="' + panelId + '" role="region" aria-labelledby="' + btnId + '">' +
+      '<div class="faq-a-inner">' + item.a + '</div>' +
+    '</div>';
+  faqEl.appendChild(wrap);
+});
+
+$$('.faq-q', faqEl).forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.parentElement;
+    const panel = item.querySelector('.faq-a');
+    const isOpen = item.classList.contains('open');
+    // close all
+    $$('.faq-item', faqEl).forEach(it => {
+      it.classList.remove('open');
+      it.querySelector('.faq-q').setAttribute('aria-expanded', 'false');
+      it.querySelector('.faq-a').style.maxHeight = null;
+    });
+    // open this one
+    if (!isOpen) {
+      item.classList.add('open');
+      btn.setAttribute('aria-expanded', 'true');
+      panel.style.maxHeight = panel.scrollHeight + 'px';
+    }
+  });
+});
+
+/* ===================================================================
+   [07] CTA — waitlist capture
+   =================================================================== */
+const form = $('#waitlist');
+const emailInput = $('#email');
+const formMsg = $('#formMsg');
+const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  formMsg.className = 'form-msg';
+  formMsg.textContent = '';
+  emailInput.classList.remove('error');
+
+  const email = emailInput.value.trim();
+  if (!emailRe.test(email)) {
+    emailInput.classList.add('error');
+    formMsg.classList.add('err');
+    formMsg.textContent = 'Enter a valid email address.';
+    emailInput.focus();
+    return;
+  }
+
+  // No endpoint configured — do NOT fake a submission.
+  if (!CONFIG.waitlistEndpoint) {
+    console.error('[Nocrew] Waitlist endpoint is not set. Set CONFIG.waitlistEndpoint (Formspree / Tally / Google Form).');
+    formMsg.classList.add('err');
+    formMsg.textContent = 'Signups aren’t live yet. Reach us on Instagram @nocrew.io.';
+    return;
+  }
+
+  const btn = form.querySelector('button');
+  btn.disabled = true; btn.textContent = 'Joining…';
+  try {
+    const res = await fetch(CONFIG.waitlistEndpoint, {
+      method: 'POST',
+      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email, _subject: 'New Nocrew waitlist signup' })
+    });
+    if (!res.ok) throw new Error('Bad response ' + res.status);
+    // swap form for confirmation, in --accent
+    form.style.display = 'none';
+    formMsg.className = 'form-msg';
+    formMsg.innerHTML = '<span class="confirm">You’re on the list.</span>';
+  } catch (err) {
+    console.error('[Nocrew] Waitlist submit failed:', err);
+    btn.disabled = false; btn.textContent = 'Join the list';
+    formMsg.classList.add('err');
+    formMsg.textContent = 'Something went wrong. Try again in a moment.';
+  }
+});
+
+/* ===================================================================
+   FOOTER — year
+   =================================================================== */
+$('#year').textContent = '© ' + new Date().getFullYear();
+
+/* CTA — "Currently booking from [MONTH]." */
+$('#bookingFrom').textContent = CONFIG.bookingFrom;
+
+/* ===================================================================
+   SCROLL REVEALS — fire once, then unobserve
+   =================================================================== */
+if (reduceMotion) {
+  $$('.reveal').forEach(el => el.classList.add('visible'));
+} else {
+  const revealObserver = new IntersectionObserver((entries, obs) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+  $$('.reveal').forEach(el => revealObserver.observe(el));
+}
+
+/* ===================================================================
+   [01] HERO — cursor-reactive motion (Layers A/B/C) + battery pause
+   -------------------------------------------------------------------
+   One pointermove listener stores a raw target; one rAF loop LERPs
+   toward it and does every DOM write. Loop stops when the hero leaves
+   the viewport. Touch = Layer A drift only. Reduced motion = nothing.
+   =================================================================== */
+const hero = $('.hero');
+const heroVideo = $('#heroVideo');
+const heroGlow = $('#heroGlow');
+const orbWraps = $$('.hero-orbs .orb-wrap');
+const pxLayers = $$('.hero-content .px');
+
+// Layers B & C (and orb parallax) only on a real hover-capable fine pointer
+const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+const motionEnabled = finePointer && !reduceMotion;
+
+// ---- TUNING (see note to Khush) ----
+const LERP = 0.075;         // current -> target easing; higher = snappier, lower = heavier
+const AMP  = 380;           // px reach at the hero edge, scaled by each layer's depth
+const VIDEO_DEPTH = 0.008;  // hero-video parallax depth
+const VIDEO_SCALE = 1.06;   // overscan so parallax never reveals the video edges
+
+// Raw targets — written ONLY inside the listener, never touch the DOM here.
+let tgtX = 0, tgtY = 0, curX = 0, curY = 0;            // normalised -1..1 from hero centre
+let glowTgtX = 0, glowTgtY = 0, glowCurX = 0, glowCurY = 0; // px within the hero
+let glowOn = false;
+
+let heroRect = null;
+const measureHero = () => { heroRect = hero.getBoundingClientRect(); };
+
+if (motionEnabled) {
+  measureHero();
+  window.addEventListener('resize', measureHero);
+  window.addEventListener('scroll', measureHero, { passive: true });
+
+  hero.addEventListener('pointermove', (e) => {
+    if (!heroRect) measureHero();
+    const halfW = heroRect.width / 2, halfH = heroRect.height / 2;
+    // normalise to -1..1 from centre so the effect is symmetric + resolution-independent
+    tgtX = Math.max(-1, Math.min(1, (e.clientX - heroRect.left - halfW) / halfW));
+    tgtY = Math.max(-1, Math.min(1, (e.clientY - heroRect.top  - halfH) / halfH));
+    // glow tracks the raw pointer position inside the hero
+    glowTgtX = e.clientX - heroRect.left;
+    glowTgtY = e.clientY - heroRect.top;
+    if (!glowOn) { glowOn = true; heroGlow.style.opacity = 1; }
+  });
+}
+
+let rafId = null;
+function renderMotion() {
+  // weighted follow — this is what makes it feel liquid rather than twitchy
+  curX += (tgtX - curX) * LERP;
+  curY += (tgtY - curY) * LERP;
+  glowCurX += (glowTgtX - glowCurX) * LERP;
+  glowCurY += (glowTgtY - glowCurY) * LERP;
+
+  // Layer A — orbs move WITH the cursor, separating by depth
+  for (const w of orbWraps) {
+    const d = parseFloat(w.dataset.depth);
+    w.style.transform = 'translate3d(' + (curX * AMP * d) + 'px,' + (curY * AMP * d) + 'px,0)';
+  }
+  // Layer B — content shifts INVERSELY (data-invert)
+  for (const p of pxLayers) {
+    const d = parseFloat(p.dataset.depth);
+    const s = p.dataset.invert ? -1 : 1;
+    p.style.transform = 'translate3d(' + (s * curX * AMP * d) + 'px,' + (s * curY * AMP * d) + 'px,0)';
+  }
+  // Layer B — video breathes with a small same-direction shift + overscan scale
+  if (heroVideo) {
+    heroVideo.style.transform =
+      'translate3d(' + (curX * AMP * VIDEO_DEPTH) + 'px,' + (curY * AMP * VIDEO_DEPTH) + 'px,0) scale(' + VIDEO_SCALE + ')';
+  }
+  // Layer C — glow, centred (320/2 = 160) on the pointer
+  heroGlow.style.transform = 'translate3d(' + (glowCurX - 160) + 'px,' + (glowCurY - 160) + 'px,0)';
+
+  rafId = requestAnimationFrame(renderMotion);
+}
+function startMotion() { if (motionEnabled && rafId === null) { measureHero(); rafId = requestAnimationFrame(renderMotion); } }
+function stopMotion()  { if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; } }
+
+// One observer runs both the battery pause and the motion loop
+if (hero) {
+  const heroObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        if (heroVideo && !reduceMotion) heroVideo.play().catch(() => {});
+        startMotion();
+      } else {
+        if (heroVideo) heroVideo.pause();
+        stopMotion();               // no idle loop off-screen
+      }
+    });
+  }, { threshold: 0.1 });
+  heroObs.observe(hero);
+  if (reduceMotion && heroVideo) heroVideo.pause();
+}
+</script>
+</body>
+</html>
