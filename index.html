@@ -311,7 +311,7 @@ button { font-family: inherit; cursor: pointer; }
 /* Mobile dot field (canvas). Hidden on desktop; replaces the blurred orbs on
    phones — cheaper to paint and gives the hero motion. */
 .hero-dots {
-  display: none;
+  display: block;
   position: absolute;
   inset: 0;
   z-index: 1;
@@ -319,10 +319,8 @@ button { font-family: inherit; cursor: pointer; }
   height: 100%;
   pointer-events: none;
 }
-@media (max-width: 720px) {
-  .hero-orbs { display: none; }   /* drop the expensive blur(80px) on mobile */
-  .hero-dots { display: block; }
-}
+/* The interactive dot grid replaces the blurred orbs + glow on every screen. */
+.hero-orbs, .hero-glow { display: none; }
 .orb-wrap {
   position: absolute;
   inset: 0;
@@ -1588,83 +1586,124 @@ if (hero) {
 }
 
 /* ===================================================================
-   [01] HERO — mobile dot GRID (canvas), looping highlight
+   [01] HERO — interactive dot grid (canvas), springy displacement
    -------------------------------------------------------------------
-   Runs only on phones (where the blurred orbs are hidden). A uniform
-   grid of dots, dim by default, with a soft highlight that travels a
-   looping path across them — the dots it passes brighten and fade, so
-   a wave of light drifts through the grid forever. Cheap to paint,
-   pauses when the hero scrolls away, off for reduced motion.
+   A still grid of dots. An invisible "influence point" repels nearby
+   dots; they spring back to home with damping, so they bounce (that
+   buoyant feel). The point follows the CURSOR on desktop, and auto-
+   drifts on a looping path on touch devices (no cursor). At rest the
+   grid just sits there. Off for reduced motion (static grid).
    =================================================================== */
 (function heroDots() {
   const canvas = $('#heroDots');
   if (!canvas || !hero) return;
 
-  const mq = window.matchMedia('(max-width: 720px)');
   const ctx = canvas.getContext('2d');
-  let pts = [], w = 0, h = 0, dpr = 1, dotRaf = null, running = false, t0 = 0;
+  const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  let pts = [], w = 0, h = 0, dpr = 1, raf = null, running = false, t0 = 0, rect = null;
+
+  // influence point (px within hero); target vs eased current
+  let ix = -1e4, iy = -1e4, itx = -1e4, ity = -1e4;
 
   // ---- TUNING ----
-  const GAP    = 30;    // px between dots
-  const DOT    = 1.4;   // dot radius
-  const BASE_A = 0.10;  // resting brightness
-  const GLOW_A = 0.65;  // peak brightness under the highlight
-  const RADIUS = 160;   // highlight reach (px)
+  const GAP    = 32;    // px between dots
+  const DOT    = 1.6;   // dot radius
+  const BASE_A = 0.16;  // resting brightness (dots always visible)
+  const BOOST  = 0.6;   // extra brightness near the influence
+  const RADIUS = 155;   // how far the push reaches (px)
+  const FORCE  = 1.9;   // push strength
+  const SPRING = 0.05;  // pull back to home
+  const DAMP   = 0.84;  // velocity damping — lower = bouncier
+  const EASE   = 0.14;  // how fast the influence follows its target
 
   function build() {
     dpr = Math.min(window.devicePixelRatio || 1, 2);   // cap DPR for perf
-    const r = hero.getBoundingClientRect();
-    w = r.width; h = r.height;
+    rect = hero.getBoundingClientRect();
+    w = rect.width; h = rect.height;
     canvas.width = Math.round(w * dpr);
     canvas.height = Math.round(h * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-    // build a centred, evenly-spaced grid
     pts = [];
     const cols = Math.ceil(w / GAP), rows = Math.ceil(h / GAP);
     const offX = (w - (cols - 1) * GAP) / 2, offY = (h - (rows - 1) * GAP) / 2;
-    for (let iy = 0; iy < rows; iy++)
-      for (let ix = 0; ix < cols; ix++)
-        pts.push({ x: offX + ix * GAP, y: offY + iy * GAP });
+    for (let r = 0; r < rows; r++)
+      for (let c = 0; c < cols; c++) {
+        const hx = offX + c * GAP, hy = offY + r * GAP;
+        pts.push({ hx, hy, x: hx, y: hy, vx: 0, vy: 0 });   // hx/hy = home
+      }
   }
 
   function frame(now) {
     if (!t0) t0 = now;
     const t = (now - t0) / 1000;
+
+    // On touch (no cursor) the influence auto-drifts on a looping path
+    if (!finePointer) {
+      itx = w * (0.5 + 0.46 * Math.sin(t * 0.85));
+      ity = h * (0.5 + 0.43 * Math.sin(t * 0.62 + 1.1));
+      if (ix < -1e3) { ix = itx; iy = ity; }   // snap in, no fly-from-corner
+    }
+    ix += (itx - ix) * EASE;
+    iy += (ity - iy) * EASE;
+
     ctx.clearRect(0, 0, w, h);
-
-    // highlight travels a smooth looping (Lissajous) path across the hero
-    const hx = w * (0.5 + 0.42 * Math.sin(t * 0.55));
-    const hy = h * (0.5 + 0.40 * Math.sin(t * 0.37 + 1.1));
     const r2 = RADIUS * RADIUS;
-
     for (const p of pts) {
-      const dx = p.x - hx, dy = p.y - hy;
-      const d2 = dx * dx + dy * dy;
-      let a = BASE_A, lime = 0;
+      const dx = p.x - ix, dy = p.y - iy, d2 = dx * dx + dy * dy;
+      let boost = 0;
       if (d2 < r2) {
-        const k = 1 - Math.sqrt(d2) / RADIUS;   // 0..1 closeness to highlight
-        a = BASE_A + (GLOW_A - BASE_A) * k * k;
-        lime = k;                               // tint toward lime near the core
+        const dist = Math.sqrt(d2) || 0.0001;
+        const k = 1 - dist / RADIUS;            // 0..1 closeness
+        const f = k * FORCE;
+        p.vx += (dx / dist) * f;                // push away from influence
+        p.vy += (dy / dist) * f;
+        boost = k;
       }
+      // spring back home + damping => buoyant bounce
+      p.vx += (p.hx - p.x) * SPRING;
+      p.vy += (p.hy - p.y) * SPRING;
+      p.vx *= DAMP; p.vy *= DAMP;
+      p.x += p.vx; p.y += p.vy;
+
+      const a = Math.min(BASE_A + BOOST * boost, 0.9);
       ctx.beginPath();
       ctx.arc(p.x, p.y, DOT, 0, Math.PI * 2);
-      ctx.fillStyle = lime > 0.35
-        ? 'rgba(232,255,90,' + (a * 0.95) + ')'
+      ctx.fillStyle = boost > 0.45
+        ? 'rgba(232,255,90,' + a + ')'          // lime near the core
         : 'rgba(245,243,239,' + a + ')';
       ctx.fill();
     }
-    dotRaf = requestAnimationFrame(frame);
+    raf = requestAnimationFrame(frame);
+  }
+
+  function drawStatic() {   // reduced motion — plain grid, no animation
+    build();
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = 'rgba(245,243,239,' + BASE_A + ')';
+    for (const p of pts) { ctx.beginPath(); ctx.arc(p.hx, p.hy, DOT, 0, Math.PI * 2); ctx.fill(); }
   }
 
   function start() {
-    if (running || reduceMotion || !mq.matches) return;
-    running = true; t0 = 0; build(); dotRaf = requestAnimationFrame(frame);
+    if (running) return;
+    if (reduceMotion) { drawStatic(); return; }
+    running = true; t0 = 0; build(); raf = requestAnimationFrame(frame);
   }
   function stop() {
     running = false;
-    if (dotRaf) { cancelAnimationFrame(dotRaf); dotRaf = null; }
-    if (ctx) ctx.clearRect(0, 0, w, h);
+    if (raf) { cancelAnimationFrame(raf); raf = null; }
+  }
+
+  // Desktop: the influence follows the cursor while it's over the hero
+  if (finePointer) {
+    hero.addEventListener('pointermove', (e) => {
+      if (!rect) rect = hero.getBoundingClientRect();
+      itx = e.clientX - rect.left;
+      ity = e.clientY - rect.top;
+      if (ix < -1e3) { ix = itx; iy = ity; }    // snap in on first move
+    });
+    hero.addEventListener('pointerleave', () => { itx = -1e4; ity = -1e4; });
+    window.addEventListener('scroll', () => { rect = hero.getBoundingClientRect(); }, { passive: true });
   }
 
   // Pause when the hero leaves the viewport (no idle loop)
@@ -1673,17 +1712,13 @@ if (hero) {
   }, { threshold: 0.05 });
   obs.observe(hero);
 
-  // React to rotation / resize and to crossing the mobile breakpoint
   let rz;
   window.addEventListener('resize', () => {
     clearTimeout(rz);
-    rz = setTimeout(() => {
-      if (!mq.matches) { stop(); return; }
-      if (running) build(); else start();
-    }, 200);
+    rz = setTimeout(() => { if (reduceMotion) { drawStatic(); return; } if (running) build(); }, 200);
   }, { passive: true });
 
-  if (mq.matches && !reduceMotion) start();
+  start();
 })();
 </script>
 </body>
